@@ -15,3 +15,28 @@ class Rectangle:
 
     # Implement methods is_square(), area() & perimeter() here
     # (See README.md for details of what they should do)
+class Rectangle:
+    """A rectangle with a width and a height."""
+
+    def __init__(self, width, height):
+        """Create a rectangle with the given width and height."""
+        if type(width) is not int or type(height) is not int:
+            raise TypeError("width and height must be integers")
+
+        if width <= 0 or height <= 0:
+            raise ValueError("width and height must be positive")
+
+        self.width = width
+        self.height = height
+
+    def is_square(self):
+        """Return True if this rectangle is a square, and False otherwise."""
+        return self.width == self.height
+
+    def area(self):
+        """Return the area of this rectangle."""
+        return self.width * self.height
+
+    def perimeter(self):
+        """Return the perimeter of this rectangle."""
+        return 2 * (self.width + self.height)

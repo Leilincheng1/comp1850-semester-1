@@ -15,4 +15,4 @@
    3 <= 3 < 10 and (10 == 10 or 5 > 8)
    ```
 
-3. Press `Ctrl+D` to exit the interpreter.
+3. Press `Ctrl+D` to exit the interpreter
