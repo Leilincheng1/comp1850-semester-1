@@ -100,12 +100,12 @@ class Image:
     def write_image(self, filename):
         """Write an ASCII P2 or P3 image."""
         with open(filename, "w", encoding="ascii") as output:
-            output.write(f"{self.MAGIC}\\n{self.width} {self.height}\\n{self.max_value}\\n")
+            output.write(f"{self.MAGIC}\n{self.width} {self.height}\n{self.max_value}\n")
             for row in range(self.height):
                 pixels = self.pixels[row * self.width:(row + 1) * self.width]
                 pieces = [str(component) for pixel in pixels
                           for component in self.pixel_tokens(pixel)]
-                output.write(" ".join(pieces) + "\\n")
+                output.write(" ".join(pieces) + "\n")
 
     def write_pgm(self, filename):
         """Compatibility alias for writing the image."""
