@@ -63,16 +63,65 @@ class Image:
         self.pixels = [value] * (width * height)
 
     def read_pgm(self, filename):
-        """
-        Reads data from the specified PGM image file into this Image.
+        """Read either ASCII P2 or binary P5 PGM, including header comments."""
+        def next_token(stream):
+            """Read a PGM header token, ignoring comments and whitespace."""
+            token = bytearray()
+            while True:
+                char = stream.read(1)
+                if not char:
+                    if token:
+                        return bytes(token)
+                    raise ImageError("Unexpected end of PGM header")
+                if char == b"#":
+                    stream.readline()
+                    if token:
+                        return bytes(token)
+                    continue
+                if char in b" \t\r\n":
+                    if token:
+                        return bytes(token)
+                    continue
+                token.extend(char)
 
-        Any existing image data will be replaced.
-        """
-        with open(filename) as imgfile:
-            self._parse_magic_number(imgfile)
-            self._parse_dimensions(imgfile)
-            self._parse_max_value(imgfile)
-            self._parse_pixels(imgfile)
+        with open(filename, "rb") as source:
+            magic = next_token(source)
+            if magic not in (b"P2", b"P5"):
+                raise ImageError("Only P2 and P5 PGM are supported")
+            width = int(next_token(source))
+            height = int(next_token(source))
+            maximum = int(next_token(source))
+            if width < 1 or height < 1 or not 1 <= maximum <= 65535:
+                raise ImageError("Invalid PGM dimensions or maximum")
+            if magic == b"P2":
+                pixels = [int(next_token(source)) for _ in range(width * height)]
+            else:
+                bytes_per_pixel = 1 if maximum < 256 else 2
+                raw = source.read(width * height * bytes_per_pixel)
+                if len(raw) != width * height * bytes_per_pixel:
+                    raise ImageError("Truncated P5 pixel data")
+                if bytes_per_pixel == 1:
+                    pixels = list(raw)
+                else:
+                    pixels = [int.from_bytes(raw[i:i + 2], "big")
+                              for i in range(0, len(raw), 2)]
+            if any(not 0 <= pixel <= maximum for pixel in pixels):
+                raise ImageError("Pixel value out of range")
+            self.width, self.height, self.max_value, self.pixels = (
+                width, height, maximum, pixels)
+
+    def write_pgm(self, filename, binary=False):
+        """Save a P2 image, or a compact P5 binary PGM if requested."""
+        if not binary:
+            with open(filename, "wt", encoding="ascii") as out:
+                self._write_header(out)
+                self._write_pixels(out)
+            return
+        width = 1 if self.max_value < 256 else 2
+        with open(filename, "wb") as out:
+            out.write(f"P5\\n{self.width} {self.height}\\n{self.max_value}\\n".encode("ascii"))
+            for pixel in self.pixels:
+                out.write(int(pixel).to_bytes(width, "big"))
 
     def _parse_magic_number(self, imgfile):
         line = imgfile.readline().strip()
@@ -132,14 +181,6 @@ class Image:
         Returns a new Image that is a copy of this Image.
         """
         return copy.deepcopy(self)
-
-    def write_pgm(self, filename):
-        """
-        Writes this Image to the specified PGM file.
-        """
-        with open(filename, "wt") as imgfile:
-            self._write_header(imgfile)
-            self._write_pixels(imgfile)
 
     def _write_header(self, imgfile):
         print("P2", file=imgfile)
