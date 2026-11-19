@@ -1,2 +1,2 @@
-# a basic Hello World program - write your code under this line
-
+# A basic Hello World program.
+print("Hello, World!")
