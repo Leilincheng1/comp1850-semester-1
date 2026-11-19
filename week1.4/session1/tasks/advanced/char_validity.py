@@ -3,7 +3,7 @@
 
 def valid_char_in_string(popList, charSet):
     """Return False for invalid character sets or disallowed input characters."""
-    if (not isinstance(charSet, list) or
+    if (not isinstance(charSet, list) or not charSet or
             any(not isinstance(c, str) or len(c) != 1 for c in charSet)):
         return False
     if not isinstance(popList, list) or any(not isinstance(s, str) for s in popList):
