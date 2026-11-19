@@ -65,9 +65,9 @@ class Image:
     def write_pgm(self, filename):
         """Write the image in P2 plain-text PGM format."""
         with open(filename, "w", encoding="ascii") as output:
-            output.write(f"P2\\n{self.width} {self.height}\\n{self.max_value}\\n")
+            output.write(f"P2\n{self.width} {self.height}\n{self.max_value}\n")
             for row in self.pixels:
-                output.write(" ".join(map(str, row)) + "\\n")
+                output.write(" ".join(map(str, row)) + "\n")
 
 
 if __name__ == "__main__":
