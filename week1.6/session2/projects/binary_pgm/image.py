@@ -119,7 +119,7 @@ class Image:
             return
         width = 1 if self.max_value < 256 else 2
         with open(filename, "wb") as out:
-            out.write(f"P5\\n{self.width} {self.height}\\n{self.max_value}\\n".encode("ascii"))
+            out.write(f"P5\n{self.width} {self.height}\n{self.max_value}\n".encode("ascii"))
             for pixel in self.pixels:
                 out.write(int(pixel).to_bytes(width, "big"))
 
