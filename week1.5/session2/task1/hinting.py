@@ -1,5 +1,6 @@
 """Use type hints to describe numeric Point coordinates (check using mypy)."""
 import math
+from typing import TYPE_CHECKING
 
 
 class Point:
@@ -22,5 +23,7 @@ class Point:
 if __name__ == "__main__":
     point = Point(3.0, 4.0)
     print(point.distance())
-    # mypy flags the commented invalid call:
-    # invalid = Point("two", "one")
+    # This branch is statically checked by mypy but not run by Python.
+    # It demonstrates the exact incompatible argument types from the task.
+    if TYPE_CHECKING:
+        invalid = Point("two", "one")
