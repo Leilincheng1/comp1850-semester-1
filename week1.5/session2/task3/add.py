@@ -1,4 +1,9 @@
-# Week 1.5, Session 2: Task 3
+"""Demonstrate the Money class and its addition operator."""
+from money import Money
 
-# Write a program here that creates two Money objects, prints them,
-# then adds them together and prints their sum
+first = Money(1, 99)
+second = Money(0, 5)
+print(first)
+print(second)
+print(first + second)
+assert str(first + second) == "£2.04"
