@@ -1,11 +1,9 @@
 # Week 1.7, Session 1: Task 1
 
-Equivalent classes for `process_data()`.
+Equivalence classes for `process_data(data)`:
 
-Hint: consider both positive and negative integers
-
-| list data | Values |
+| List data | Values and expected results |
 | --- | --- |
-| Empty list | |
-| Single integer list  | |
-| Multiple integer list |  |
+| Empty list | `[] -> None` |
+| Single integer list | `[0] -> 0`, `[7] -> 7`, `[-4] -> -4` |
+| Multiple integer list | `[1, 2, 3] -> 6`, `[-2, -3] -> -5`, `[5, -5, 0] -> 0` |
