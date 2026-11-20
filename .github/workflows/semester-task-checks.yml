@@ -1,0 +1,49 @@
+name: Semester task checks
+
+on:
+  push:
+    paths:
+      - "week1.*/**"
+      - ".github/workflows/semester-task-checks.yml"
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Check all non-worksheet Python source files compile
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import py_compile
+          files = sorted(
+              p for p in Path(".").glob("week1.*//**/*.py")
+              if "worksheet" not in p.parts
+          )
+          if not files:
+              raise SystemExit("No semester Python files found")
+          failed = []
+          for file in files:
+              try:
+                  py_compile.compile(str(file), doraise=True)
+              except py_compile.PyCompileError as exc:
+                  print(exc)
+                  failed.append(str(file))
+          print(f"Checked {len(files)} files, {len(failed)} syntax errors")
+          if failed:
+              raise SystemExit(1)
+          PY
+      - name: Install test tools
+        run: python -m pip install pytest
+      - name: Test Week 1.7 exercises
+        run: |
+          python -m pytest -q week1.7/session1/task2/1_weather/test_comfort.py
+          python -m pytest -q week1.7/session1/task2/2_process_data/test_process_data.py
+          python -m pytest -q week1.7/session1/task2/3_geometry/test_geometry.py
+          python -m pytest -q week1.7/session1/task4/test_money.py
+          python week1.7/session2/task4/test_grade.py
+          python -m unittest discover -s week1.7/additional_work -p "test_unittest.py" -v

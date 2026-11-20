@@ -1,5 +1,4 @@
-# Week 1.3, Session 1: Task 1a
-
+"""Count to 20 and identify multiples of four."""
 i = 0
 
 while i < 21:

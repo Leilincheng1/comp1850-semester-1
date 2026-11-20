@@ -6,3 +6,6 @@
 # between 3 and 50 that are divisible by 3
 for i in range (3,51,3):
     print(i)
+"""Print multiples of three from 3 through 50."""
+for number in range(3, 51, 3):
+    print(number)

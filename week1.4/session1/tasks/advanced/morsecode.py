@@ -30,6 +30,13 @@ def string_to_morse_code(string):
              ':': '---...', ',': '--..--', '=': '-...-',  '!': '-.-.--',
              '.': '.-.-.-', '-': '-....-', '+': '.-.-.',  '"': '.-..-.',
              '?': '..--..', '/': '-..-.'}
+    
+    # Separate encoded characters with spaces. A word space maps to an
+    # empty visible group, producing the conventional three-space gap.
+    try:
+        return " ".join(mcode[character] for character in string.upper())
+    except KeyError as error:
+        raise ValueError(f"Unsupported Morse code character: {error.args[0]}") from error
 
 
 # test data

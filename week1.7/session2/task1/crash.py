@@ -1,12 +1,14 @@
-# Week 1.7, Session 2: Task 1 - IndexError
+"""Assign squares to each element without exceeding the list's bounds."""
 
-# Run this program and observe what happens
 
-def assign_values(x):
-    for i in range(100):
-        x[i] = (i + 1) * (i + 1);
+def assign_values(values):
+    """Replace each list item with its 1-based index squared."""
+    for i in range(len(values)):
+        values[i] = (i + 1) ** 2
+
 
 if __name__ == "__main__":
     data = [0] * 10
     assign_values(data)
     print("Done!")
+    print(data)

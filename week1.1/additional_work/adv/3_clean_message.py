@@ -1,13 +1,9 @@
-"""Advanced Task 3: Clean Message Toolkit
-- Collect a message that might contain extra spaces or mixed casing.
-- Use at least three different string methods (e.g. strip, title, replace, upper) to tidy the message.
-- Print the original and cleaned versions so the difference is obvious.
-- Extension: show the message length before and after cleaning.
-"""
+"""Clean a message using string methods and compare its length."""
 
-raw_message = input("Type a message to tidy: ")
-
-# TODO: apply a sequence of string methods to produce a cleaned_message
-# Example methods: strip, title, replace, lower, upper
-# TODO: display the original and cleaned messages
-# Extension: display the character counts for each version
+original = input("Type a message to tidy: ")
+# Strip outer whitespace, normalize repeated spaces, and title-case words.
+cleaned_message = " ".join(original.strip().split()).title()
+print(f"Original message: {original}")
+print(f"Cleaned message: {cleaned_message}")
+print(f"Original length: {len(original)}")
+print(f"Cleaned length: {len(cleaned_message)}")

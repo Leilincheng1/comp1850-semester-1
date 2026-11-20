@@ -1,7 +1,5 @@
-# Week 1.3, Session 1: Task 3b
-
-fruit = ['apple','pear','banana','orange']
-
+"""Remove fruit items and report normal loop completion."""
+fruit = ["apple", "pear", "banana", "orange"]
 while fruit:
 	print(fruit.pop())
 else:
